@@ -1,4 +1,12 @@
 # Swordfish
 
-A simple implementation of express's usual suspects (jade, stylus,
-mongoose) along with angular for front end and karma/jasmine for tests.
+A simple node app runnning 
++ **express**, routing
++ **mongo**, data
++ **mongoose*,  data modeling
++ **karma**, test automation
++ **jasmine**, BDD
++ **angular**, MVC
++ **jade**, HTML
++ **stylus**, CSS
+
