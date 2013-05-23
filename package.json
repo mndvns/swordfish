@@ -1,0 +1,22 @@
+{
+  "name": "Swordfish",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "~3.0.0",
+    "jade": "~0.x.x",
+    "mongoose": "~3.6.11",
+    "stylus": "~0.x.x",
+    "nib": "~0.9.x",
+    "browserify": "~2.14.x",
+    "colors": "~0.6.x",
+    "jquery": "~1.8.x",
+    "underscore": "~1.4.x"
+  },
+  "devDependencies": {
+    "grunt": ">= 0.4.1",
+    "grunt-livescript": ">= 0.x.x",
+    "grunt-contrib-watch": ">= 0.4.x",
+    "grunt-contrib-nodeunit": ">= 0.1.2"
+  }
+}
