@@ -1,11 +1,16 @@
 
 # Module dependencies.
 require! express:  express
+require! stylus:   stylus
+
 require! routes:   './routes'
 require! api:      './routes/api'
 
-app = module.exports = express!
+require! mongoose: './config/mongoose'
 
+offer = require './public/js/offer/OfferModel.js'
+
+app = module.exports = express!
 
 # App Configuration
 app.configure ->

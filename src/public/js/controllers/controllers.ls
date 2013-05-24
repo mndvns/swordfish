@@ -8,8 +8,8 @@ AppCtrl = ($scope, $http)->
   .error (data, status, headers, config)->
     $scope.name = 'Error!'
 
-Ctrl = ->
-  it.user-type = 'guest'
+Ctrl = ($scope)->
+  $scope.user-type = 'guest'
 
 MyCtrl1 = ->
 MyCtrl1.$inject = [];

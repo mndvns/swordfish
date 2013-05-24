@@ -9,8 +9,8 @@ AppCtrl = function($scope, $http){
     return $scope.name = 'Error!';
   });
 };
-Ctrl = function(it){
-  return it.userType = 'guest';
+Ctrl = function($scope){
+  return $scope.userType = 'guest';
 };
 MyCtrl1 = function(){};
 MyCtrl1.$inject = [];

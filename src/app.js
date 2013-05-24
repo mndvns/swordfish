@@ -1,7 +1,10 @@
-var express, routes, api, app;
+var express, stylus, routes, api, mongoose, offer, app;
 express = require('express');
+stylus = require('stylus');
 routes = require('./routes');
 api = require('./routes/api');
+mongoose = require('./config/mongoose');
+offer = require('./public/js/offer/OfferModel.js');
 app = module.exports = express();
 app.configure(function(){
   app.set("views", __dirname + "/views");
