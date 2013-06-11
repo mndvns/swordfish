@@ -1,21 +1,28 @@
-{each, map, filter} = require 'prelude-ls'
+
+{each, map, filter, flatten} = require 'prelude-ls'
+require! _: underscore
 
 module.exports = (grunt)->
 
+  build-tasks = []=
+    \livescript
+    \stylus
+    \copy
+    \concat
+    ...
   grunt.initConfig {}=
-
     pkg: grunt.file.readJSON 'package.json'
 
     livescript:
       options: bare: true
       dist:
         paths : <[ src/**/*.ls ]>
-        files :
-          expand: true
-          cwd   : "src/"
-          src   : "**/*.ls"
-          dest  : "dist/"
-          ext   : ".js"
+        files : []=
+          * expand: true
+            cwd   : "src/"
+            src   : "**/*.ls"
+            dest  : "dist/"
+            ext   : ".js"
           ...
 
     stylus:
@@ -27,12 +34,18 @@ module.exports = (grunt)->
     copy: main:
       paths: <[ src/client/**/*.jade ]>
       files: []=
-        * expand: true
-          cwd : "src/client/views"
-          src : "**/*.jade"
-          dest: "dist/client/views"
-          ext : ".jade"
+        expand: true
+        cwd : "src/client/views"
+        src : "**/*.jade"
+        dest: "dist/client/views"
+        ext : ".jade"
         ...
+
+    concat: dist:
+      src: <[
+        dist/lib/active/**/*.js
+        ]>
+      dest: 'dist/public/lib/build.js'
 
     watch:
       files: []=
@@ -40,11 +53,7 @@ module.exports = (grunt)->
         '<%= stylus.compile.options.paths %>'
         '<%= copy.main.paths %>'
         ...
-      tasks: []=
-        \livescript
-        \stylus
-        \copy
-        ...
+      tasks: build-tasks
 
   each (-> grunt.load-npm-tasks "grunt-" + it ), []=
     \livescript
@@ -53,13 +62,12 @@ module.exports = (grunt)->
     \contrib-watch
     \contrib-stylus
     \contrib-copy
+    \contrib-concat
     ...
 
-  each (-> grunt.register-task it[0], it[1]), []=
+  each (-> grunt.register-task it[0], _.flatten it[1] ), []=
     * 'build'
-      * \livescript
-        \stylus
-        \copy
+      * build-tasks
         \watch
         ...
     * 'default'

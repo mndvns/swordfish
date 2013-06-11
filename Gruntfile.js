@@ -1,6 +1,9 @@
-var ref$, each, map, filter;
-ref$ = require('prelude-ls'), each = ref$.each, map = ref$.map, filter = ref$.filter;
+var ref$, each, map, filter, flatten, _;
+ref$ = require('prelude-ls'), each = ref$.each, map = ref$.map, filter = ref$.filter, flatten = ref$.flatten;
+_ = require('underscore');
 module.exports = function(grunt){
+  var buildTasks;
+  buildTasks = ['livescript', 'stylus', 'copy', 'concat'];
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     livescript: {
@@ -40,15 +43,21 @@ module.exports = function(grunt){
         }]
       }
     },
+    concat: {
+      dist: {
+        src: ['dist/lib/active/**/*.js'],
+        dest: 'dist/public/lib/build.js'
+      }
+    },
     watch: {
       files: ['<%= livescript.dist.paths %>', '<%= stylus.compile.options.paths %>', '<%= copy.main.paths %>'],
-      tasks: ['livescript', 'stylus', 'copy']
+      tasks: buildTasks
     }
   });
   each(function(it){
     return grunt.loadNpmTasks("grunt-" + it);
-  }, ['livescript', 'shell', 'contrib-clean', 'contrib-watch', 'contrib-stylus', 'contrib-copy']);
+  }, ['livescript', 'shell', 'contrib-clean', 'contrib-watch', 'contrib-stylus', 'contrib-copy', 'contrib-concat']);
   return each(function(it){
-    return grunt.registerTask(it[0], it[1]);
-  }, [['build', ['livescript', 'stylus', 'copy', 'watch']], ['default', ['build']]]);
+    return grunt.registerTask(it[0], _.flatten(it[1]));
+  }, [['build', [buildTasks, 'watch']], ['default', ['build']]]);
 };
