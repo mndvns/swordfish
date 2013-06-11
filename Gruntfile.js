@@ -24,19 +24,31 @@ module.exports = function(grunt){
           paths: ['src/styl/**/*.styl']
         },
         files: {
-          "dist/css/styles.css": "src/styl/styles.styl"
+          "dist/public/css/styles.css": "src/styl/styles.styl"
         }
       }
     },
+    copy: {
+      main: {
+        paths: ['src/client/**/*.jade'],
+        files: [{
+          expand: true,
+          cwd: "src/client/views",
+          src: "**/*.jade",
+          dest: "dist/client/views",
+          ext: ".jade"
+        }]
+      }
+    },
     watch: {
-      files: ['<%= livescript.dist.paths %>', '<%= stylus.compile.options.paths %>'],
-      tasks: ['livescript', 'stylus']
+      files: ['<%= livescript.dist.paths %>', '<%= stylus.compile.options.paths %>', '<%= copy.main.paths %>'],
+      tasks: ['livescript', 'stylus', 'copy']
     }
   });
   each(function(it){
     return grunt.loadNpmTasks("grunt-" + it);
-  }, ['livescript', 'shell', 'contrib-clean', 'contrib-watch', 'contrib-stylus']);
+  }, ['livescript', 'shell', 'contrib-clean', 'contrib-watch', 'contrib-stylus', 'contrib-copy']);
   return each(function(it){
     return grunt.registerTask(it[0], it[1]);
-  }, [['build', ['livescript', 'stylus', 'watch']], ['default', ['build']]]);
+  }, [['build', ['livescript', 'stylus', 'copy', 'watch']], ['default', ['build']]]);
 };

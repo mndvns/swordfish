@@ -6,7 +6,7 @@ api = require('./routes/api');
 mongoose = require('./config/mongoose');
 app = module.exports = express();
 app.configure(function(){
-  app.set("views", __dirname + "/views");
+  app.set("views", __dirname + "/client/views");
   app.set("view engine", "jade");
   app.use(express.bodyParser());
   app.use(express.methodOverride());

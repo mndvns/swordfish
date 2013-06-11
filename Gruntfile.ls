@@ -22,18 +22,29 @@ module.exports = (grunt)->
       compile:
         options:
           paths: <[ src/styl/**/*.styl ]>
-        files: "dist/css/styles.css" : "src/styl/styles.styl"
+        files: "dist/public/css/styles.css" : "src/styl/styles.styl"
+
+    copy: main:
+      paths: <[ src/client/**/*.jade ]>
+      files: []=
+        * expand: true
+          cwd : "src/client/views"
+          src : "**/*.jade"
+          dest: "dist/client/views"
+          ext : ".jade"
+        ...
 
     watch:
       files: []=
         '<%= livescript.dist.paths %>'
         '<%= stylus.compile.options.paths %>'
+        '<%= copy.main.paths %>'
         ...
       tasks: []=
         \livescript
         \stylus
+        \copy
         ...
-
 
   each (-> grunt.load-npm-tasks "grunt-" + it ), []=
     \livescript
@@ -41,12 +52,14 @@ module.exports = (grunt)->
     \contrib-clean
     \contrib-watch
     \contrib-stylus
+    \contrib-copy
     ...
 
   each (-> grunt.register-task it[0], it[1]), []=
     * 'build'
       * \livescript
         \stylus
+        \copy
         \watch
         ...
     * 'default'

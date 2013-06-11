@@ -14,7 +14,7 @@ app = module.exports = express!
 
 # App Configuration
 app.configure ->
-  app.set "views", __dirname + "/views"
+  app.set "views", __dirname + "/client/views"
   app.set "view engine", "jade"
   app.use express.body-parser!
   app.use express.method-override!
@@ -28,7 +28,6 @@ app.configure "development", ->
 
 app.configure "production", !->
   app.use express.error-handler!
-
 
 # Routes
 app.get "/", routes.index
