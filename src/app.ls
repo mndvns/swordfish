@@ -2,23 +2,32 @@
 # Module dependencies.
 require! express:  express
 require! stylus:   stylus
+require! nib:      nib
 
-require! routes:   './routes'
+require! routes:   './routes/index'
 require! api:      './routes/api'
 
 require! mongoose: './config/mongoose'
 
-# offer = require './public/js/offer/OfferModel.js'
-# asasd
 app = module.exports = express!
 
 # App Configuration
 app.configure ->
   app.set "views", __dirname + "/client/views"
   app.set "view engine", "jade"
+
   app.use express.body-parser!
   app.use express.method-override!
   app.use express.static __dirname + "/public"
+
+  app.use stylus.middleware {}=
+    src:     __dirname
+    compile: (str, path)->
+      stylus str
+        .set 'filename', path
+        .set 'compress', true
+        .use nib!
+
   app.use app.router
 
 app.configure "development", ->

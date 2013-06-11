@@ -1,7 +1,8 @@
-var express, stylus, routes, api, mongoose, app;
+var express, stylus, nib, routes, api, mongoose, app;
 express = require('express');
 stylus = require('stylus');
-routes = require('./routes');
+nib = require('nib');
+routes = require('./routes/index');
 api = require('./routes/api');
 mongoose = require('./config/mongoose');
 app = module.exports = express();
@@ -11,6 +12,12 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express['static'](__dirname + "/public"));
+  app.use(stylus.middleware({
+    src: __dirname,
+    compile: function(str, path){
+      return stylus(str).set('filename', path).set('compress', true).use(nib());
+    }
+  }));
   return app.use(app.router);
 });
 app.configure("development", function(){
