@@ -1,5 +1,5 @@
 // Karma configuration
-basePath = '../';
+basePath = '../../';
 preprocessors = {
 };
 // list of files / patterns to load in the browser

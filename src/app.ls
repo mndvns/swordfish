@@ -8,8 +8,8 @@ require! api:      './routes/api'
 
 require! mongoose: './config/mongoose'
 
-offer = require './public/js/offer/OfferModel.js'
-
+# offer = require './public/js/offer/OfferModel.js'
+# asasd
 app = module.exports = express!
 
 # App Configuration
