@@ -3,12 +3,23 @@ ref$ = require('prelude-ls'), each = ref$.each, map = ref$.map, filter = ref$.fi
 _ = require('underscore');
 module.exports = function(grunt){
   var buildTasks;
-  buildTasks = ['livescript', 'stylus', 'copy', 'concat'];
-  grunt.initConfig({
+  buildTasks = ['clean:pre', 'livescript', 'stylus', 'copy', 'concat:lib', 'concat:scripts'];
+  each(function(it){
+    return grunt.loadNpmTasks("grunt-" + it);
+  }, ['livescript', 'shell', 'contrib-watch', 'contrib-stylus', 'contrib-copy', 'contrib-concat', 'contrib-clean']);
+  each(function(it){
+    return grunt.registerTask(it[0], _.flatten(it[1]));
+  }, [['build', [buildTasks, 'watch']], ['default', ['build']]]);
+  return grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: {
+      pre: ['dist/*/'],
+      post: ['dist/client/scripts', 'dist/client/lib']
+    },
     livescript: {
       options: {
-        bare: true
+        bare: true,
+        prelude: true
       },
       dist: {
         paths: ['src/**/*.ls'],
@@ -27,26 +38,30 @@ module.exports = function(grunt){
           paths: ['src/styl/**/*.styl']
         },
         files: {
-          "dist/public/css/styles.css": "src/styl/styles.styl"
+          "dist/public/css/styles.css": "src/**/styles.styl"
         }
       }
     },
     copy: {
       main: {
-        paths: ['src/client/**/*.jade'],
+        paths: ['src/**/*.jade'],
         files: [{
           expand: true,
-          cwd: "src/client/views",
+          cwd: "src",
           src: "**/*.jade",
-          dest: "dist/client/views",
+          dest: "dist",
           ext: ".jade"
         }]
       }
     },
     concat: {
-      dist: {
-        src: ['dist/lib/active/**/*.js'],
-        dest: 'dist/public/lib/build.js'
+      scripts: {
+        src: ['dist/common/**/*.js', 'dist/client/scripts/**/*.js'],
+        dest: 'dist/public/js/scripts-build.js'
+      },
+      lib: {
+        src: ['dist/client/lib/active/**/*.js'],
+        dest: 'dist/public/js/lib-build.js'
       }
     },
     watch: {
@@ -54,10 +69,4 @@ module.exports = function(grunt){
       tasks: buildTasks
     }
   });
-  each(function(it){
-    return grunt.loadNpmTasks("grunt-" + it);
-  }, ['livescript', 'shell', 'contrib-clean', 'contrib-watch', 'contrib-stylus', 'contrib-copy', 'contrib-concat']);
-  return each(function(it){
-    return grunt.registerTask(it[0], _.flatten(it[1]));
-  }, [['build', [buildTasks, 'watch']], ['default', ['build']]]);
 };

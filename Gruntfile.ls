@@ -5,64 +5,22 @@ require! _: underscore
 module.exports = (grunt)->
 
   build-tasks = []=
+    \clean:pre
     \livescript
     \stylus
     \copy
-    \concat
+    \concat:lib
+    \concat:scripts
     ...
-  grunt.initConfig {}=
-    pkg: grunt.file.readJSON 'package.json'
-
-    livescript:
-      options: bare: true
-      dist:
-        paths : <[ src/**/*.ls ]>
-        files : []=
-          * expand: true
-            cwd   : "src/"
-            src   : "**/*.ls"
-            dest  : "dist/"
-            ext   : ".js"
-          ...
-
-    stylus:
-      compile:
-        options:
-          paths: <[ src/styl/**/*.styl ]>
-        files: "dist/public/css/styles.css" : "src/styl/styles.styl"
-
-    copy: main:
-      paths: <[ src/client/**/*.jade ]>
-      files: []=
-        expand: true
-        cwd : "src/client/views"
-        src : "**/*.jade"
-        dest: "dist/client/views"
-        ext : ".jade"
-        ...
-
-    concat: dist:
-      src: <[
-        dist/lib/active/**/*.js
-        ]>
-      dest: 'dist/public/lib/build.js'
-
-    watch:
-      files: []=
-        '<%= livescript.dist.paths %>'
-        '<%= stylus.compile.options.paths %>'
-        '<%= copy.main.paths %>'
-        ...
-      tasks: build-tasks
 
   each (-> grunt.load-npm-tasks "grunt-" + it ), []=
     \livescript
     \shell
-    \contrib-clean
     \contrib-watch
     \contrib-stylus
     \contrib-copy
     \contrib-concat
+    \contrib-clean
     ...
 
   each (-> grunt.register-task it[0], _.flatten it[1] ), []=
@@ -74,7 +32,63 @@ module.exports = (grunt)->
       * \build
         ...
 
+  grunt.init-config {}=
+    pkg: grunt.file.readJSON 'package.json'
 
+    clean:
+      pre   : <[ dist/*/ ]>
+      post  : <[
+        dist/client/scripts
+        dist/client/lib
+      ]>
 
+    livescript:
+      options:
+        bare: true
+        prelude: true
+      dist:
+        paths : <[ src/**/*.ls ]>
+        files : []=
+          expand: true
+          cwd   : "src/"
+          src   : "**/*.ls"
+          dest  : "dist/"
+          ext   : ".js"
+          ...
 
+    stylus:
+      compile:
+        options:
+          paths: <[ src/styl/**/*.styl ]>
+        files: "dist/public/css/styles.css" : "src/**/styles.styl"
+
+    copy:
+      main:
+        paths: <[ src/**/*.jade ]>
+        files: []=
+          expand: true
+          cwd : "src"
+          src : "**/*.jade"
+          dest: "dist"
+          ext : ".jade"
+          ...
+
+    concat:
+      scripts:
+        src: <[
+          dist/common/**/*.js
+          dist/client/scripts/**/*.js
+        ]>
+        dest: 'dist/public/js/scripts-build.js'
+      lib:
+        src: <[ dist/client/lib/active/**/*.js ]>
+        dest: 'dist/public/js/lib-build.js'
+
+    watch:
+      files: []=
+        '<%= livescript.dist.paths %>'
+        '<%= stylus.compile.options.paths %>'
+        '<%= copy.main.paths %>'
+        ...
+      tasks: build-tasks
 
