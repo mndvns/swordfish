@@ -1,5 +1,5 @@
 <img
-src='http://25.media.tumblr.com/tumblr_m974r7areJ1rc39ujo1_1280.jpg'
+src='http://i.imgur.com/YZ6aOHk.jpg'
 width="200" style="float:right" >
 
 _**Swordfish** is an opinionated web application seed for opinionated developers._
