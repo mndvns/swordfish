@@ -1,14 +1,18 @@
 <img src='http://i.imgur.com/YZ6aOHk.jpg' height="200" style="" >
 
-_**Swordfish** is an opinionated web application seed for opinionated developers._
+# Swordfish
 
-***
+It is...
 
-It is for people who prefer...
+- an angular + express web application seed
+- pragmatic but opinionated 
+- very, very alpha
 
-- **functional** over object orientated
-- **transcompilation** and preprocessing
-- **minimalism** but not magic
+It prefers...
+
+- transcompilation and preprocessing
+- functional over object orientated
+- minimalism without magic
 
 It is written in...
 
