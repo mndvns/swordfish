@@ -47,7 +47,7 @@ module.exports = (grunt)->
         bare: true
         prelude: true
       dist:
-        paths : <[ src/**/*.ls ]>
+        paths : [ "src/**/*.ls" ]
         files : []=
           expand: true
           cwd   : "src/"
@@ -59,12 +59,12 @@ module.exports = (grunt)->
     stylus:
       compile:
         options:
-          paths: <[ src/styl/**/*.styl ]>
+          paths: [ "#/styl/**/*.styl" ]
         files: "dist/public/css/styles.css" : "src/**/styles.styl"
 
     copy:
       main:
-        paths: <[ src/**/*.jade ]>
+        paths: [ "src/**/*.jade" ]
         files: []=
           expand: true
           cwd : "src"

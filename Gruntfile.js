@@ -22,7 +22,7 @@ module.exports = function(grunt){
         prelude: true
       },
       dist: {
-        paths: ['src/**/*.ls'],
+        paths: ["src/**/*.ls"],
         files: [{
           expand: true,
           cwd: "src/",
@@ -35,7 +35,7 @@ module.exports = function(grunt){
     stylus: {
       compile: {
         options: {
-          paths: ['src/styl/**/*.styl']
+          paths: ["#/styl/**/*.styl"]
         },
         files: {
           "dist/public/css/styles.css": "src/**/styles.styl"
@@ -44,7 +44,7 @@ module.exports = function(grunt){
     },
     copy: {
       main: {
-        paths: ['src/**/*.jade'],
+        paths: ["src/**/*.jade"],
         files: [{
           expand: true,
           cwd: "src",
