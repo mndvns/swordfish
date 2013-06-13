@@ -8,7 +8,7 @@ It is for people who prefer...
 
 - **functional** over object orientated
 - **transcompilation** and preprocessing
-- **minimalism,** but not magic
+- **minimalism** but not magic
 
 It is written in...
 
