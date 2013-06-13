@@ -1,6 +1,6 @@
 <img
 src='http://i.imgur.com/YZ6aOHk.jpg'
-width="200" style="float:right" >
+height="200" style="float:right" >
 
 _**Swordfish** is an opinionated web application seed for opinionated developers._
 
