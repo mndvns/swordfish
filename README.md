@@ -4,14 +4,12 @@
 
 It is...
 
+- ***currently broken***
 - an angular + express web application seed
-- pragmatic but opinionated 
-- very, very alpha
 
 It prefers...
 
 - transcompilation and preprocessing
-- functional over object orientated
 - minimalism without magic
 
 It is written in...
