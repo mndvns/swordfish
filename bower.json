@@ -1,0 +1,16 @@
+{
+  "name": "polygon",
+  "version": "0.0.0",
+  "main": "scripts/app.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "directory": "dist/libs",
+  "dependencies": {
+    "font-awesome": "~3.2.1",
+    "angular": "~1.0.7",
+    "jquery": "~2.0.2"
+  }
+}

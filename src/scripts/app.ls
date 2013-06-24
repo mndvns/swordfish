@@ -1,4 +1,14 @@
 
+console.log "i'm app.ls"
+
+require ["main/derp"], ->
+  console.log "inside require"
+  console.log things
+
+$ 'div' .hide()
+
+# require ["../../components/angular/angular.min"], ->
+
 # Declare app level module which depends on filters, and services
 angular.module('myApp', ['myApp.controllers', 'myApp.filters', 'myApp.services', 'myApp.directives'])
   .config ['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider)->

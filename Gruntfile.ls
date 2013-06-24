@@ -1,5 +1,5 @@
 
-{each, map, filter, flatten} = require 'prelude-ls'
+{concat, each, map, filter, flatten} = require 'prelude-ls'
 require! _: underscore
 
 module.exports = (grunt)->
@@ -7,36 +7,66 @@ module.exports = (grunt)->
   build-tasks = []=
     \clean:pre
     \livescript
+    \concat:libs
+    \requirejs
     \stylus
-    \copy
-    \concat:lib
-    \concat:scripts
+    \jade
     ...
 
-  each (-> grunt.load-npm-tasks "grunt-" + it ), []=
+  grunt-contrib-libs = map (-> "contrib-" + it), []=
+    \jade
+    \watch
+    \stylus
+    \copy
+    \clean
+    \requirejs
+    \concat
+    ...
+
+  grunt-vendor-libs = []=
     \livescript
-    \shell
-    \contrib-watch
-    \contrib-stylus
-    \contrib-copy
-    \contrib-concat
-    \contrib-clean
+    ...
+
+  app-libs = map (-> "dist/lib/#it/#it.min.js"), []=
+    \angular
+    \jquery
+    ...
+
+  each (-> grunt.load-npm-tasks "grunt-" + it ), concat []=
+    grunt-contrib-libs
+    grunt-vendor-libs
     ...
 
   each (-> grunt.register-task it[0], _.flatten it[1] ), []=
-    * 'build'
+    * \build
       * build-tasks
         \watch
         ...
-    * 'default'
+    * \default
       * \build
         ...
 
   grunt.init-config {}=
     pkg: grunt.file.readJSON 'package.json'
 
+    requirejs:
+      compile:
+        options:
+          name: "app"
+          base-url: "dist/lib"
+          main-config-file: "dist/scripts/app.js"
+          out: "dist/scripts/out.js"
+          paths:
+            app: "../scripts/app"
+            main: "../scripts"
+
+
     clean:
-      pre   : <[ dist/*/ ]>
+      pre   : <[
+        dist/scripts/*
+        dist/*.css
+        dist/*js
+        ]>
       post  : <[
         dist/client/scripts
         dist/client/lib
@@ -47,48 +77,52 @@ module.exports = (grunt)->
         bare: true
         prelude: true
       dist:
-        paths : [ "src/**/*.ls" ]
         files : []=
-          expand: true
-          cwd   : "src/"
-          src   : "**/*.ls"
-          dest  : "dist/"
-          ext   : ".js"
+          expand : true
+          cwd    : "src/"
+          src    : "**/*.ls"
+          dest   : "dist/"
+          ext    : ".js"
           ...
 
     stylus:
       compile:
         options:
-          paths: [ "#/styl/**/*.styl" ]
-        files: "dist/public/css/styles.css" : "src/**/styles.styl"
+          paths: [ "src/**/styl/**/*.styl" ]
+        files: "dist/css/styles.css" : "src/**/styles.styl"
+
+    jade:
+      options:
+        pretty: true
+      compile: 
+        files: []=
+          expand : true
+          cwd    : "src/views"
+          src    : "**/*.jade"
+          dest   : "dist"
+          ext    : ".html"
+          ...
+
 
     copy:
-      main:
-        paths: [ "src/**/*.jade" ]
+      libs:
         files: []=
-          expand: true
-          cwd : "src"
-          src : "**/*.jade"
-          dest: "dist"
-          ext : ".jade"
+          expand : true
+          cwd    : "dist/lib"
+          src    : "*/*.min.js"
+          dest   : "dist"
+          ext    : ".min.js"
           ...
 
     concat:
-      scripts:
-        src: <[
-          dist/common/**/*.js
-          dist/client/scripts/**/*.js
-        ]>
-        dest: 'dist/public/js/scripts-build.js'
-      lib:
-        src: <[ dist/client/lib/active/**/*.js ]>
-        dest: 'dist/public/js/lib-build.js'
+      libs:
+        src: app-libs
+        dest: 'dist/lib-build.js'
 
     watch:
       files: []=
-        '<%= livescript.dist.paths %>'
-        '<%= stylus.compile.options.paths %>'
-        '<%= copy.main.paths %>'
-        ...
+        "src/**/*.ls"
+        "src/**/*.jade"
+        "src/**/*.styl"
       tasks: build-tasks
 
